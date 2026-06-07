@@ -552,7 +552,7 @@
   #gallery .carousel-item {
     flex: 0 0 280px;
     height: 380px;
-    border-radius: 12px;
+    border-radius: 0;
     overflow: hidden;
     scroll-snap-align: center;
     background: #D0CECE;
@@ -586,7 +586,7 @@
 
   /* ── CALENDAR & COUNTDOWN ── */
   #calendar-section {
-    background: var(--bg);
+    background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 40%, #FBFFC9 100%);
     text-align: center;
   }
 
@@ -654,7 +654,7 @@
   }
 
   .cal-day-label.sun { color: #E57373; }
-  .cal-day-label.sat { color: #64B5F6; }
+  .cal-day-label.sat { color: var(--dark); }
 
   .cal-day {
     aspect-ratio: 1;
@@ -662,7 +662,7 @@
     align-items: center;
     justify-content: center;
     font-size: 15px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--dark);
     border-radius: 50%;
     cursor: default;
@@ -670,7 +670,7 @@
 
   .cal-day.other-month { color: var(--divider); }
   .cal-day.sunday { color: #E57373; }
-  .cal-day.saturday { color: #64B5F6; }
+  .cal-day.saturday { color: var(--dark); }
 
   .cal-day.wedding-day {
     background: var(--dark);
@@ -718,6 +718,7 @@
   /* ── MAP ── */
   #map-section {
     background: var(--bg);
+    padding: 48px 32px 64px;
   }
 
   #map-section .section-title {
@@ -823,9 +824,11 @@
   }
 
   .transport-row .t-icon {
-    font-size: 14px;
     flex-shrink: 0;
-    margin-top: 1px;
+    margin-top: 2px;
+    color: var(--dark);
+    display: flex;
+    align-items: flex-start;
   }
 
   /* ── BANK ── */
@@ -979,27 +982,46 @@
   }
 
   .guestbook-form .author-input {
-    flex: 0 0 100px;
+    flex: 0 0 120px;
   }
+
+  .guestbook-form .form-input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 50px;
+    background: #f7f7f7;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dark);
+    outline: none;
+    box-sizing: border-box;
+  }
+
+  .guestbook-form .form-input::placeholder { color: #bbb; }
+  .guestbook-form .form-input:focus { border-color: var(--dark); background: #fff; }
 
   .guestbook-form textarea {
     width: 100%;
-    padding: 13px 16px;
-    border: 1.5px solid var(--divider);
-    border-radius: 10px;
+    padding: 14px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 20px;
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 300;
     color: var(--dark);
-    background: var(--card-bg);
+    background: #f7f7f7;
     outline: none;
     resize: none;
-    height: 80px;
+    height: 90px;
+    box-sizing: border-box;
     transition: border-color 0.2s;
     margin-bottom: 10px;
   }
 
-  .guestbook-form textarea:focus { border-color: var(--lime); }
-  .guestbook-form textarea::placeholder { color: var(--light); }
+  .guestbook-form textarea:focus { border-color: var(--dark); background: #fff; }
+  .guestbook-form textarea::placeholder { color: #bbb; }
 
   .submit-guest {
     width: 100%;
@@ -1312,7 +1334,7 @@
     <div class="rsvp-sheet">
       <div class="rsvp-sheet-body">
         <div class="rsvp-sheet-header">
-          <span class="rsvp-sheet-title">RSVP</span>
+          <span class="rsvp-sheet-title">참석 여부</span>
           <button class="rsvp-close" onclick="closeRsvp()">✕</button>
         </div>
 
@@ -1388,25 +1410,13 @@
       <div class="cal-header">2026년 10월</div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
-      <div class="countdown-item">
-        <div class="num" id="cdHours">--</div>
-        <div class="label">HOURS</div>
-      </div>
-      <div class="countdown-item">
-        <div class="num" id="cdMins">--</div>
-        <div class="label">MINS</div>
-      </div>
-      <div class="countdown-item">
-        <div class="num" id="cdSecs">--</div>
-        <div class="label">SECS</div>
-      </div>
-    </div>
+
   </section>
 
   <!-- ⑥ MAP -->
   <section id="map-section">
-    <div class="section-title fade-up">오시는 길</div>
-    <div class="section-sub fade-up delay-1">LOCATION</div>
+    <div class="section-sub fade-up">LOCATION</div>
+    <div class="section-title fade-up delay-1">오시는 길</div>
 
     <div class="map-container">
       <iframe
@@ -1436,15 +1446,15 @@
     <div class="transport-info">
       <h4>교통 안내</h4>
       <div class="transport-row">
-        <span class="t-icon">🚇</span>
+        <span class="t-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8.5" cy="16.5" r="1.5"/><circle cx="15.5" cy="16.5" r="1.5"/><path d="M8 19l-2 2"/><path d="M16 19l2 2"/></svg></span>
         <div><strong>지하철</strong><br>5호선 여의나루역 2번 출구에서 도보 10분<br>9호선 국회의사당역 1번 출구에서 도보 15분</div>
       </div>
       <div class="transport-row">
-        <span class="t-icon">🚌</span>
+        <span class="t-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><circle cx="15" cy="18" r="2"/></svg></span>
         <div><strong>버스</strong><br>여의도한강공원 정류장 하차</div>
       </div>
       <div class="transport-row">
-        <span class="t-icon">🚗</span>
+        <span class="t-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17H5v-5l2-5h10l2 5v5z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/><path d="M5 12h14"/></svg></span>
         <div><strong>주차</strong><br>한강공원 여의도 주차장 이용 가능<br>주차 공간 협소 · 대중교통 이용 권장</div>
       </div>
     </div>
@@ -1452,8 +1462,8 @@
 
   <!-- ⑦ BANK -->
   <section id="bank">
-    <div class="section-title fade-up">마음 전하기</div>
-    <div class="section-sub fade-up delay-1">GIFT</div>
+    <div class="section-sub fade-up">ACCOUNT</div>
+    <div class="section-title fade-up delay-1">마음 전할 곳</div>
 
     <!-- 신랑측 -->
     <div class="accordion-item">
@@ -1510,8 +1520,8 @@
 
   <!-- ⑨ GUESTBOOK -->
   <section id="guestbook">
-    <div class="section-title fade-up">축하 메시지</div>
-    <div class="section-sub fade-up delay-1">GUESTBOOK</div>
+    <div class="section-sub fade-up">GUESTBOOK</div>
+    <div class="section-title fade-up delay-1">축하 메시지</div>
 
     <div class="guestbook-form">
       <div class="form-row">
@@ -1623,12 +1633,14 @@ function showToast(msg) {
     grid.appendChild(prev);
   }
 
+  // Korean public holidays in Oct 2026
+  const holidays = [3, 9]; // 개천절(3일), 한글날(9일)
+
   for (let d = 1; d <= totalDays; d++) {
     const dayEl = document.createElement('div');
     const dayOfWeek = (firstDay + d - 1) % 7;
     let cls = 'cal-day';
-    if (dayOfWeek === 0) cls += ' sunday';
-    if (dayOfWeek === 6) cls += ' saturday';
+    if (dayOfWeek === 0 || holidays.includes(d)) cls += ' sunday'; // red for sunday + holidays
     if (d === weddingDay) cls += ' wedding-day';
     dayEl.className = cls;
     dayEl.textContent = d;
