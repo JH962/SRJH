@@ -1152,6 +1152,58 @@
     text-align: center;
   }
 
+
+  .save-date-countdown {
+    margin-top: 20px;
+  }
+
+  .sdc-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+
+  .sdc-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 36px;
+  }
+
+  .sdc-num {
+    font-family: var(--font-sans);
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--dark);
+    line-height: 1;
+  }
+
+  .sdc-label {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    color: var(--mid);
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+  }
+
+  .sdc-sep {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--mid);
+    padding-bottom: 14px;
+  }
+
+  .sdc-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: var(--mid);
+  }
+
   /* BGM Button */
   #bgmBtn {
     position: fixed;
@@ -1318,19 +1370,24 @@
     <div class="save-date-display fade-up delay-1">
       <div class="save-date-main">2026년 10월 24일</div>
       <div class="save-date-sub">토요일 오후 6시</div>
-      <div class="save-date-dday" id="ddayLine"></div>
+      <div class="save-date-countdown">
+        <div class="sdc-row">
+          <div class="sdc-item"><span class="sdc-num" id="cdDays">--</span><span class="sdc-label">DAYS</span></div>
+          <span class="sdc-sep">:</span>
+          <div class="sdc-item"><span class="sdc-num" id="cdHours">--</span><span class="sdc-label">HOUR</span></div>
+          <span class="sdc-sep">:</span>
+          <div class="sdc-item"><span class="sdc-num" id="cdMins">--</span><span class="sdc-label">MIN</span></div>
+          <span class="sdc-sep">:</span>
+          <div class="sdc-item"><span class="sdc-num" id="cdSecs">--</span><span class="sdc-label">SEC</span></div>
+        </div>
+        <div class="sdc-text" id="ddayLine"></div>
+      </div>
     </div>
 
     <div class="cal-wrap fade-up delay-2">
       <div class="cal-header">2026년 10월</div>
       <div class="cal-grid" id="calGrid"></div>
     </div>
-
-    <div class="countdown-wrap">
-      <div class="countdown-item">
-        <div class="num" id="cdDays">--</div>
-        <div class="label">DAYS</div>
-      </div>
       <div class="countdown-item">
         <div class="num" id="cdHours">--</div>
         <div class="label">HOURS</div>
@@ -1775,18 +1832,29 @@ function toggleBgm() {
   document.addEventListener('mousedown', tryAutoPlay, { once: true });
 })();
 
-// D-day counter for save-the-date
-(function() {
+// Countdown timer
+(function tick() {
   const wedding = new Date('2026-10-24T18:00:00');
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const diff = Math.ceil((wedding - today) / (1000 * 60 * 60 * 24));
-  const el = document.getElementById('ddayLine');
-  if (el) {
-    if (diff > 0) el.textContent = '서래 ❤︎ 지현의 결혼식이 ' + diff + '일 남았습니다';
-    else if (diff === 0) el.textContent = '오늘이 서래 ❤︎ 지현의 결혼식입니다 🎉';
-    else el.textContent = '서래 ❤︎ 지현이 결혼했습니다 🎊';
+  const now = new Date();
+  const diff = wedding - now;
+
+  if (diff > 0) {
+    const days  = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const mins  = Math.floor((diff % (1000*60*60)) / (1000*60));
+    const secs  = Math.floor((diff % (1000*60)) / 1000);
+
+    const pad = n => String(n).padStart(2,'0');
+    const set = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v; };
+    set('cdDays',  days);
+    set('cdHours', pad(hours));
+    set('cdMins',  pad(mins));
+    set('cdSecs',  pad(secs));
+
+    const dl = document.getElementById('ddayLine');
+    if (dl) dl.textContent = '서래 ❤︎ 지현의 결혼식이 ' + days + '일 남았습니다';
   }
+  setTimeout(tick, 1000);
 })();
 </script>
 </body>
