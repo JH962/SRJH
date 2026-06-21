@@ -1934,7 +1934,7 @@
         setTimeout(loadEntries, 1500);
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
-    // loadEntries called on sheet open
+    loadEntries();
 
     // ── SCROLL ANIMATION ──
     const observer = new IntersectionObserver((entries) => {
