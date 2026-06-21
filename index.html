@@ -1733,6 +1733,8 @@
       const message = document.getElementById('rsvp-message') ? document.getElementById('rsvp-message').value.trim() : '';
       fetch(GAS_URL, {
         method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'rsvp', name, count, meal, message })
       }).then(() => {
         alert('참석 여부가 전달되었습니다. 감사합니다! 💛');
@@ -1795,11 +1797,13 @@
       if (!name || !msg) { alert('이름과 메시지를 입력해 주세요.'); return; }
       fetch(GAS_URL, {
         method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'guestbook', name, message: msg })
       }).then(() => {
         document.getElementById('gb-name').value = '';
         document.getElementById('gb-msg').value = '';
-        loadEntries();
+        setTimeout(loadEntries, 1500);
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
     loadEntries();
