@@ -708,7 +708,7 @@
     /* ── GUESTBOOK ── */
     .section-guestbook {
       background: #f4f4f4;
-      padding: 48px 24px 72px;
+      padding: 48px 24px 92px;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -1056,14 +1056,15 @@
     .section-fin {
       position: relative;
       width: 100%;
+      height: 400px;
       line-height: 0;
+      overflow: hidden;
     }
     .section-fin::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 120px;
-      background: linear-gradient(180deg, #f4f4f4 0%, transparent 100%);
+      inset: 0;
+      background: rgba(0,0,0,0.10);
       z-index: 1;
       pointer-events: none;
     }
