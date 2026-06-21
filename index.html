@@ -1075,7 +1075,7 @@
     }
     .fin-copy {
       position: absolute;
-      bottom: 24px;
+      bottom: 40px;
       left: 0; right: 0;
       text-align: center;
       font-size: 10px;
@@ -1083,6 +1083,28 @@
       color: rgba(255,255,255,0.7);
       letter-spacing: 1px;
       z-index: 2;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1e1e1e;
+      color: #fff;
+      font-size: 13px;
+      padding: 12px 24px;
+      border-radius: 999px;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 9999;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 </style>
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=2v39e0o4lg"></script>
@@ -1770,6 +1792,13 @@
     // ── GUESTBOOK (Google Sheets) ──
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbz3hn4lTr62lSgETdwWS5AFyURqEEvL3Jyodi29xQGmgeCbOmLp6t7gUZK4JQLz5a8q/exec';
 
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2500);
+    }
     function loadEntries() {
       const container = document.getElementById('gb-entries');
       container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">불러오는 중...</div>';
@@ -1803,6 +1832,7 @@
       }).then(() => {
         document.getElementById('gb-name').value = '';
         document.getElementById('gb-msg').value = '';
+        showToast('메시지를 남겼어요 💛');
         setTimeout(loadEntries, 1500);
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
@@ -1876,5 +1906,7 @@
       });
     }
 </script>
+
+    <div class="toast" id="toast"></div>
 </body>
 </html>
