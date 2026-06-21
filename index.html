@@ -806,19 +806,21 @@
     }
     .gb-sheet {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      width: 100%;
+      max-width: 480px;
       background: #fff;
       border-radius: 20px 20px 0 0;
       padding: 24px 24px 48px;
       display: flex;
       flex-direction: column;
       gap: 14px;
-      transform: translateY(100%);
       transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
       z-index: 1001;
     }
     .gb-sheet-overlay.open .gb-sheet {
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
     .gb-sheet-handle {
       width: 40px;
@@ -1432,8 +1434,8 @@
               <strong>자가용</strong>
               <span>한강공원 주차장 2시간 무료 주차</span>
               <span>네비게이션 검색 시 '반포 한강공원반포제2주차장'</span>
-              <span>*반포대교가 아닌 잠수교를 이용하여야 진입 가능</span>
-              <span>*한강공원이 혼잡할 수 있어 여유있게 도착 권장</span>
+              <span style='opacity:0.8'>*반포대교가 아닌 잠수교를 이용하여야 진입 가능</span>
+              <span style='opacity:0.8'>*한강공원이 혼잡할 수 있어 여유있게 도착 권장</span>
             </div>
           </div>
         </div>
