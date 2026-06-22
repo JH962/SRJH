@@ -1084,14 +1084,13 @@
       position: absolute;
       width: 28px;
       top: -20px;
-      left: calc(50% + 4px);
-      transform: translateX(-50%) rotate(-8deg);
-      animation: heartWobble 0.5s steps(1, end) infinite alternate;
+      left: calc(50% + 8px);
+      transform: translateX(calc(-50% - 3px)) rotate(-10deg) translateY(0px);
+      transition: none;
       pointer-events: none;
     }
-    @keyframes heartWobble {
-      0%   { transform: translateX(calc(-50% - 3px)) rotate(-10deg) translateY(0px); }
-      100% { transform: translateX(calc(-50% + 3px)) rotate(6deg) translateY(-3px); }
+    .loading-heart.alt {
+      transform: translateX(calc(-50% + 3px)) rotate(6deg) translateY(-3px);
     }
     .loading-caption {
       color: rgba(255,255,255,0.85);
@@ -1734,11 +1733,13 @@
     // loading slideshow
     (function() {
       const slides = document.querySelectorAll('.loading-slide');
+      const heart = document.querySelector('.loading-heart');
       let cur = 0;
       _slideInterval = setInterval(() => {
         slides[cur].classList.remove('active');
         cur = (cur + 1) % slides.length;
         slides[cur].classList.add('active');
+        if (heart) heart.classList.toggle('alt');
       }, 1000);
     })();
 
