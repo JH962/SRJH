@@ -746,6 +746,22 @@
       flex-direction: column;
       gap: 30px;
     }
+    .gb-loading {
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+    .gb-spinner {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #ddd;
+      border-top-color: #1e1e1e;
+      border-radius: 50%;
+      animation: gb-spin 0.7s linear infinite;
+    }
+    @keyframes gb-spin {
+      to { transform: rotate(360deg); }
+    }
     .gb-entry {
       position: relative;
       background: #ffffff;
@@ -1901,7 +1917,10 @@
     }
     function loadEntries() {
       const container = document.getElementById('gb-entries');
-      // silent load
+      const hasEntries = container.querySelector('.gb-entry') !== null;
+      if (!hasEntries) {
+        container.innerHTML = '<div class="gb-loading"><div class="gb-spinner"></div></div>';
+      }
       fetch(GAS_URL + '?type=guestbook')
         .then(r => r.json())
         .then(rows => {
@@ -1917,7 +1936,11 @@
             container.appendChild(div);
           });
         })
-        .catch(() => { container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">불러오기 실패</div>'; });
+        .catch(() => {
+          if (!hasEntries) {
+            container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">불러오기 실패</div>';
+          }
+        });
     }
 
     function submitGuestbook() {
