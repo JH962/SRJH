@@ -1956,8 +1956,14 @@
         document.getElementById('gb-name').value = '';
         document.getElementById('gb-msg').value = '';
         closeGbSheet();
-        showToast('메시지를 남겼어요 💛');
-        setTimeout(loadEntries, 1500);
+        showToast('메시지를 남겼어요');
+        const container = document.getElementById('gb-entries');
+        const emptyMsg = container.querySelector('div[style]');
+        if (emptyMsg) emptyMsg.remove();
+        const div = document.createElement('div');
+        div.className = 'gb-entry';
+        div.innerHTML = `<div class="gb-entry-name">${name}</div><div class="gb-entry-msg">${msg}</div>`;
+        container.prepend(div);
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
     loadEntries();
