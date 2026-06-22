@@ -1080,6 +1080,19 @@
       width: 180px;
       height: 180px;
     }
+    .loading-heart {
+      position: absolute;
+      width: 36px;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-8deg);
+      animation: heartWobble 1s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes heartWobble {
+      0%   { transform: translateX(calc(-50% - 4px)) rotate(-10deg) translateY(0px); }
+      100% { transform: translateX(calc(-50% + 4px)) rotate(6deg) translateY(-4px); }
+    }
     .loading-caption {
       color: rgba(255,255,255,0.85);
       font-family: 'Pretendard Variable', Pretendard, sans-serif;
@@ -1216,10 +1229,11 @@
 <body>
   <!-- LOADING SCREEN -->
   <div id="loading-screen">
-    <div class="loading-slide-wrap"><img class="loading-photo loading-slide active" src="assets/loading1.png" alt="">
-      
+    <div class="loading-slide-wrap">
+      <img class="loading-heart" src="assets/heart.png" alt="">
+      <img class="loading-photo loading-slide active" src="assets/loading1.png" alt="">
       <img class="loading-photo loading-slide" src="assets/loading3.png" alt="">
-      </div>
+    </div>
     <div class="loading-caption">김서래, 박지현<br>결혼합니다</div>
   </div>
 
