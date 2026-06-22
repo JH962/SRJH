@@ -1874,7 +1874,7 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'rsvp', name, count, meal, message })
       }).then(() => {
-        showToast('참석 여부가 전달되었습니다. 감사합니다!');
+        showToast('참석 여부가 전달되었습니다. 감사합니다! 💛');
       }).catch(() => {
         showToast('전송 실패. 다시 시도해 주세요.');
       });
@@ -1974,7 +1974,7 @@
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'guestbook', name, message: msg })
       }).then(() => {
-        showToast('메시지를 남겼어요');
+        showToast('메시지를 남겼어요 💛');
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
     loadEntries();
