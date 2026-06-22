@@ -1082,16 +1082,16 @@
     }
     .loading-heart {
       position: absolute;
-      width: 36px;
-      top: -22px;
-      left: 50%;
+      width: 28px;
+      top: -20px;
+      left: calc(50% + 4px);
       transform: translateX(-50%) rotate(-8deg);
-      animation: heartWobble 1s ease-in-out infinite alternate;
+      animation: heartWobble 0.5s steps(1, end) infinite alternate;
       pointer-events: none;
     }
     @keyframes heartWobble {
-      0%   { transform: translateX(calc(-50% - 4px)) rotate(-10deg) translateY(0px); }
-      100% { transform: translateX(calc(-50% + 4px)) rotate(6deg) translateY(-4px); }
+      0%   { transform: translateX(calc(-50% - 3px)) rotate(-10deg) translateY(0px); }
+      100% { transform: translateX(calc(-50% + 3px)) rotate(6deg) translateY(-3px); }
     }
     .loading-caption {
       color: rgba(255,255,255,0.85);
