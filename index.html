@@ -930,6 +930,13 @@
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
+    @keyframes slideDown {
+      from { transform: translateY(0); }
+      to { transform: translateY(100%); }
+    }
+    .modal-overlay.closing .modal-sheet {
+      animation: slideDown 0.3s cubic-bezier(0.4,0,1,1) forwards;
+    }
     .modal-handle {
       width: 36px;
       height: 4px;
@@ -1800,12 +1807,16 @@
       document.getElementById('rsvp-modal').classList.add('open');
     }
     function closeRsvp() {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
-      window.scrollTo(0, _scrollY);
-      document.getElementById('rsvp-modal').classList.remove('open');
+      const overlay = document.getElementById('rsvp-modal');
+      overlay.classList.add('closing');
+      overlay.querySelector('.modal-sheet').addEventListener('animationend', () => {
+        overlay.classList.remove('open', 'closing');
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, _scrollY);
+      }, { once: true });
     }
     function closeRsvpOutside(e) {
       if (e.target === document.getElementById('rsvp-modal')) closeRsvp();
@@ -1856,13 +1867,13 @@
       const count = document.getElementById('rsvp-count') ? document.getElementById('rsvp-count').value : '';
       const meal = document.getElementById('rsvp-meal') ? document.getElementById('rsvp-meal').value : '';
       const message = document.getElementById('rsvp-message') ? document.getElementById('rsvp-message').value.trim() : '';
+      closeRsvp();
       fetch(GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'rsvp', name, count, meal, message })
       }).then(() => {
-        closeRsvp();
         showToast('참석 여부가 전달되었습니다. 감사합니다!');
       }).catch(() => {
         showToast('전송 실패. 다시 시도해 주세요.');
