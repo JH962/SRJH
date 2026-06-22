@@ -832,7 +832,7 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
+      transition: transform 0.32s cubic-bezier(0.4,0,1,1);
       z-index: 1001;
     }
     .gb-sheet-overlay.open .gb-sheet {
@@ -1947,23 +1947,23 @@
       const name = document.getElementById('gb-name').value.trim();
       const msg = document.getElementById('gb-msg').value.trim();
       if (!name || !msg) { alert('이름과 메시지를 입력해 주세요.'); return; }
+      document.getElementById('gb-name').value = '';
+      document.getElementById('gb-msg').value = '';
+      closeGbSheet();
+      const container = document.getElementById('gb-entries');
+      const emptyMsg = container.querySelector('div[style]');
+      if (emptyMsg) emptyMsg.remove();
+      const div = document.createElement('div');
+      div.className = 'gb-entry';
+      div.innerHTML = `<div class="gb-entry-name">${name}</div><div class="gb-entry-msg">${msg}</div>`;
+      container.prepend(div);
       fetch(GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify({ type: 'guestbook', name, message: msg })
       }).then(() => {
-        document.getElementById('gb-name').value = '';
-        document.getElementById('gb-msg').value = '';
-        closeGbSheet();
         showToast('메시지를 남겼어요');
-        const container = document.getElementById('gb-entries');
-        const emptyMsg = container.querySelector('div[style]');
-        if (emptyMsg) emptyMsg.remove();
-        const div = document.createElement('div');
-        div.className = 'gb-entry';
-        div.innerHTML = `<div class="gb-entry-name">${name}</div><div class="gb-entry-msg">${msg}</div>`;
-        container.prepend(div);
       }).catch(() => alert('전송 실패. 다시 시도해 주세요.'));
     }
     loadEntries();
