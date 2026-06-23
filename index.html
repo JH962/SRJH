@@ -113,9 +113,9 @@
 
     /* ── BGM BUTTON ── */
     .bgm-btn {
-      position: fixed;
+      position: sticky;
       top: 18px;
-      right: 18px;
+      margin: 18px 18px -50px auto;
       width: 52px;
       height: 32px;
       background: rgba(100,100,100,0.75);
@@ -1178,17 +1178,17 @@
     }
     .mem-camera-wrap {
       position: relative;
-      width: 260px;
-      height: 460px;
+      width: 240px;
+      height: 496px;
       margin: 0 auto;
       z-index: 2;
     }
     
     .mem-screen {
       position: absolute;
-      top: 3.1%;
-      left: 7.0%;
-      width: 92.6%;
+      top: 2.8%;
+      left: 5.8%;
+      width: 94.0%;
       overflow: hidden;
       z-index: 1;
     }
@@ -1228,14 +1228,25 @@
       z-index: 1;
       pointer-events: none;
     }
-    .section-fin img {
+    .section-fin .fin-bg {
       width: 100%;
+      height: 100%;
       display: block;
       object-fit: cover;
     }
+    .fin-letter {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 280px;
+      max-width: 82%;
+      height: auto;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+    }
     .fin-copy {
       position: absolute;
-      bottom: 40px;
+      bottom: 60px;
       left: 0; right: 0;
       text-align: center;
       font-size: 10px;
@@ -1282,6 +1293,13 @@
   </div>
 
   <div id="app">
+    <!-- BGM BUTTON -->
+    <button class="bgm-btn playing" id="bgm-btn" onclick="toggleBgm()">
+      <span class="bgm-bar"></span>
+      <span class="bgm-bar"></span>
+      <span class="bgm-bar"></span>
+      <span class="bgm-bar"></span>
+    </button>
 
     <!-- HERO -->
     <section class="hero">
@@ -1626,7 +1644,8 @@
     <!-- FIN IMAGE -->
     <section class="section-fin">
       <div class="fin-copy">© 2026 SEORAE &amp; JIHYUN</div>
-      <img src="images/final.jpg" alt="">
+      <img class="fin-letter" src="assets/letter.png" alt="">
+      <img class="fin-bg" src="images/final.jpg" alt="">
     </section>
 
     <!-- FOOTER -->
@@ -1691,14 +1710,6 @@
     </div>
   </div>
 
-  <!-- BGM BUTTON -->
-  <button class="bgm-btn playing" id="bgm-btn" onclick="toggleBgm()">
-    <span class="bgm-bar"></span>
-    <span class="bgm-bar"></span>
-    <span class="bgm-bar"></span>
-    <span class="bgm-bar"></span>
-  </button>
-
   <script>
 
     // ── GALLERY ──
@@ -1708,6 +1719,29 @@
     const galleryThumbs = document.getElementById('gallery-thumbs');
     let currentSlide = 0;
     let galleryTrackIndex = 1;
+    function normalizeSlideIndex(idx) {
+      return (idx + TOTAL_SLIDES) % TOTAL_SLIDES;
+    }
+    function prepareGalleryImage(idx) {
+      const normalizedIdx = normalizeSlideIndex(idx);
+      const candidates = [
+        gallerySlides.children[normalizedIdx + 1],
+        normalizedIdx === 0 ? gallerySlides.children[TOTAL_SLIDES + 1] : null,
+        normalizedIdx === TOTAL_SLIDES - 1 ? gallerySlides.children[0] : null
+      ];
+      candidates.forEach(slide => {
+        const img = slide && slide.querySelector('img');
+        if (!img) return;
+        img.loading = 'eager';
+        img.decoding = 'async';
+        if (img.decode) img.decode().catch(() => {});
+      });
+    }
+    function prepareNearbyGalleryImages(idx) {
+      prepareGalleryImage(idx);
+      prepareGalleryImage(idx - 1);
+      prepareGalleryImage(idx + 1);
+    }
     function setGalleryPosition(idx, animated) {
       gallerySlides.style.transition = animated ? GALLERY_TRANSITION : 'none';
       gallerySlides.style.transform = `translateX(-${idx * 100}%)`;
@@ -1725,6 +1759,7 @@
     function goSlide(idx) {
       currentSlide = idx;
       galleryTrackIndex = idx + 1;
+      prepareNearbyGalleryImages(currentSlide);
       setGalleryPosition(galleryTrackIndex, true);
       updateGalleryThumbs(idx);
     }
@@ -1732,6 +1767,7 @@
       const isEdgeLoop = (currentSlide === TOTAL_SLIDES - 1 && step > 0) || (currentSlide === 0 && step < 0);
       galleryTrackIndex += step;
       currentSlide = (currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES;
+      prepareNearbyGalleryImages(currentSlide);
       setGalleryPosition(galleryTrackIndex, true);
       if (isEdgeLoop) {
         galleryThumbs.classList.add('is-fading');
@@ -1748,6 +1784,8 @@
       gallerySlides.prepend(slides[slides.length - 1].cloneNode(true));
       gallerySlides.append(slides[0].cloneNode(true));
       setGalleryPosition(galleryTrackIndex, false);
+      prepareNearbyGalleryImages(currentSlide);
+      prepareGalleryImage(TOTAL_SLIDES - 1);
       gallerySlides.addEventListener('transitionend', () => {
         if (galleryTrackIndex === 0) {
           galleryTrackIndex = TOTAL_SLIDES;
