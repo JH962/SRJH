@@ -261,6 +261,7 @@
       height: 600px;
       overflow: hidden;
       background: #d0cece;
+      touch-action: pan-y;
     }
     .gallery-slides {
       display: flex;
@@ -278,6 +279,28 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+    .gallery-arrow {
+      position: absolute;
+      top: 50%;
+      z-index: 2;
+      width: 28px;
+      height: 44px;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: #fff;
+      font-size: 24px;
+      font-weight: 200;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.9;
+    }
+    .gallery-arrow.prev {
+      left: 10px;
+    }
+    .gallery-arrow.next {
+      right: 10px;
     }
     .gallery-thumbs {
       display: flex;
@@ -1325,6 +1348,8 @@
           <div class="gallery-slide"><img src="images/gallery/gallery19.jpg" alt=""></div>
           <div class="gallery-slide"><img src="images/gallery/gallery20.jpg" alt=""></div>
         </div>
+        <button class="gallery-arrow prev" type="button" aria-label="이전 사진" onclick="moveGallery(-1)">&lt;</button>
+        <button class="gallery-arrow next" type="button" aria-label="다음 사진" onclick="moveGallery(1)">&gt;</button>
       </div>
       <div class="gallery-thumbs" id="gallery-thumbs">
           <div class="gallery-thumb active" onclick="goSlide(0)"><img src="images/gallery/gallery1.jpg" alt=""></div>
@@ -1669,14 +1694,31 @@
       // 썸네일 활성 항목 스크롤
       thumbs[idx] && thumbs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
+    function moveGallery(step) {
+      goSlide(Math.max(0, Math.min(TOTAL_SLIDES - 1, currentSlide + step)));
+    }
     // swipe support
     (function() {
       const wrap = document.querySelector('.gallery-main-wrap');
       let startX = 0;
-      wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+      let startY = 0;
+      let isHorizontalSwipe = false;
+      wrap.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        isHorizontalSwipe = false;
+      }, {passive:true});
+      wrap.addEventListener('touchmove', e => {
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        if (!isHorizontalSwipe && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy)) {
+          isHorizontalSwipe = true;
+        }
+        if (isHorizontalSwipe) e.preventDefault();
+      }, {passive:false});
       wrap.addEventListener('touchend', e => {
         const dx = e.changedTouches[0].clientX - startX;
-        if (Math.abs(dx) > 40) goSlide(Math.max(0, Math.min(TOTAL_SLIDES - 1, currentSlide + (dx < 0 ? 1 : -1))));
+        if (isHorizontalSwipe && Math.abs(dx) > 40) moveGallery(dx < 0 ? 1 : -1);
       }, {passive:true});
     })();
 
