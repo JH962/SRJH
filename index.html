@@ -1708,7 +1708,7 @@
       thumbs[idx] && thumbs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
     function moveGallery(step) {
-      goSlide(Math.max(0, Math.min(TOTAL_SLIDES - 1, currentSlide + step)));
+      goSlide((currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES);
     }
     // swipe support
     (function() {
