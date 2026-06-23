@@ -324,6 +324,11 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
+      opacity: 1;
+      transition: opacity 0.18s ease;
+    }
+    .gallery-thumbs.is-fading {
+      opacity: 0;
     }
     .gallery-thumbs::-webkit-scrollbar { display: none; }
     .gallery-thumb {
@@ -1700,6 +1705,7 @@
     const TOTAL_SLIDES = 20;
     const GALLERY_TRANSITION = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
     const gallerySlides = document.getElementById('gallery-slides');
+    const galleryThumbs = document.getElementById('gallery-thumbs');
     let currentSlide = 0;
     let galleryTrackIndex = 1;
     function setGalleryPosition(idx, animated) {
@@ -1727,7 +1733,15 @@
       galleryTrackIndex += step;
       currentSlide = (currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES;
       setGalleryPosition(galleryTrackIndex, true);
-      updateGalleryThumbs(currentSlide, !isEdgeLoop);
+      if (isEdgeLoop) {
+        galleryThumbs.classList.add('is-fading');
+        setTimeout(() => {
+          updateGalleryThumbs(currentSlide, false);
+          requestAnimationFrame(() => galleryThumbs.classList.remove('is-fading'));
+        }, 150);
+      } else {
+        updateGalleryThumbs(currentSlide);
+      }
     }
     (function initGalleryLoop() {
       const slides = Array.from(gallerySlides.children);
