@@ -265,13 +265,13 @@
     }
     .gallery-slides {
       display: flex;
-      width: 2000%;
+      width: 100%;
       height: 100%;
       transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
     }
     .gallery-slide {
-      width: 5%;
-      flex-shrink: 0;
+      width: 100%;
+      flex: 0 0 100%;
       height: 100%;
     }
     .gallery-slide img {
@@ -1698,18 +1698,51 @@
 
     // ── GALLERY ──
     const TOTAL_SLIDES = 20;
+    const GALLERY_TRANSITION = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
+    const gallerySlides = document.getElementById('gallery-slides');
     let currentSlide = 0;
-    function goSlide(idx) {
-      currentSlide = idx;
-      document.getElementById('gallery-slides').style.transform = `translateX(-${idx * (100 / TOTAL_SLIDES)}%)`;
+    let galleryTrackIndex = 1;
+    function setGalleryPosition(idx, animated) {
+      gallerySlides.style.transition = animated ? GALLERY_TRANSITION : 'none';
+      gallerySlides.style.transform = `translateX(-${idx * 100}%)`;
+      if (!animated) {
+        gallerySlides.offsetHeight;
+        gallerySlides.style.transition = GALLERY_TRANSITION;
+      }
+    }
+    function updateGalleryThumbs(idx) {
       const thumbs = document.querySelectorAll('.gallery-thumb');
       thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
       // 썸네일 활성 항목 스크롤
       thumbs[idx] && thumbs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
     }
-    function moveGallery(step) {
-      goSlide((currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES);
+    function goSlide(idx) {
+      currentSlide = idx;
+      galleryTrackIndex = idx + 1;
+      setGalleryPosition(galleryTrackIndex, true);
+      updateGalleryThumbs(idx);
     }
+    function moveGallery(step) {
+      galleryTrackIndex += step;
+      currentSlide = (currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES;
+      setGalleryPosition(galleryTrackIndex, true);
+      updateGalleryThumbs(currentSlide);
+    }
+    (function initGalleryLoop() {
+      const slides = Array.from(gallerySlides.children);
+      gallerySlides.prepend(slides[slides.length - 1].cloneNode(true));
+      gallerySlides.append(slides[0].cloneNode(true));
+      setGalleryPosition(galleryTrackIndex, false);
+      gallerySlides.addEventListener('transitionend', () => {
+        if (galleryTrackIndex === 0) {
+          galleryTrackIndex = TOTAL_SLIDES;
+          setGalleryPosition(galleryTrackIndex, false);
+        } else if (galleryTrackIndex === TOTAL_SLIDES + 1) {
+          galleryTrackIndex = 1;
+          setGalleryPosition(galleryTrackIndex, false);
+        }
+      });
+    })();
     // swipe support
     (function() {
       const wrap = document.querySelector('.gallery-main-wrap');
