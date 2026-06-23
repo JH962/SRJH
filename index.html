@@ -38,6 +38,7 @@
       align-items: center;
       min-height: 100vh;
       font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+      word-break: keep-all;
     }
 
     #app {
@@ -619,7 +620,7 @@
     .transport-item {
       display: grid;
       grid-template-columns: 72px 1fr;
-      gap: 0 12px;
+      gap: 0;
       align-items: flex-start;
     }
     .transport-item .t-body {
@@ -1342,9 +1343,9 @@
         <div class="mem-camera-wrap">
           <div class="mem-screen">
             <img class="mem-slide active" src="images/sub1.jpg" alt="">
-            <img class="mem-slide" src="images/sub2.jpg" alt="">
-            <img class="mem-slide" src="images/sub3.jpg" alt="">
-            <img class="mem-slide" src="images/sub4.jpg" alt="">
+            <img class="mem-slide" loading="lazy" src="images/sub2.jpg" alt="">
+            <img class="mem-slide" loading="lazy" src="images/sub3.jpg" alt="">
+            <img class="mem-slide" loading="lazy" src="images/sub4.jpg" alt="">
           </div>
           <img class="mem-frame" src="assets/camera_frame.png" alt="">
         </div>
@@ -1355,26 +1356,26 @@
     <section class="section-gallery">
       <div class="gallery-main-wrap">
         <div class="gallery-slides" id="gallery-slides">
-          <div class="gallery-slide"><img src="images/gallery/gallery1.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery2.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery3.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery4.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery5.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery6.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery7.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery8.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery9.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery10.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery11.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery12.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery13.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery14.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery15.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery16.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery17.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery18.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery19.jpg" alt=""></div>
-          <div class="gallery-slide"><img src="images/gallery/gallery20.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery1.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery2.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery3.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery4.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery5.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery6.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery7.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery8.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery9.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery10.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery11.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery12.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery13.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery14.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery15.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery16.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery17.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery18.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery19.jpg" alt=""></div>
+          <div class="gallery-slide"><img loading="lazy" src="images/gallery/gallery20.jpg" alt=""></div>
         </div>
         <button class="gallery-arrow prev" type="button" aria-label="이전 사진" onclick="moveGallery(-1)"></button>
         <button class="gallery-arrow next" type="button" aria-label="다음 사진" onclick="moveGallery(1)"></button>
@@ -1493,7 +1494,7 @@
           </div>
           <div class="transport-item">            <div class="t-body">
               <strong>자가용</strong>
-              <span>한강공원 주차장 2시간 무료 주차</span>
+              <span>한강공원 주차장 3시간 무료 주차</span>
               <span>네비게이션 검색 '반포 한강공원반포제2주차장'</span>
               <span style='opacity:0.5;display:inline-block;padding-top:4px'>*반포대교가 아닌 잠수교를 이용하여야 진입 가능</span>
               <span style='opacity:0.5'>*한강공원이 혼잡할 수 있어 여유있게 도착 권장</span>
