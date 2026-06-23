@@ -325,10 +325,10 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       opacity: 1;
-      transition: opacity 0.18s ease;
+      transition: opacity 0.12s ease;
     }
     .gallery-thumbs.is-fading {
-      opacity: 0;
+      opacity: 0.55;
     }
     .gallery-thumbs::-webkit-scrollbar { display: none; }
     .gallery-thumb {
@@ -1738,7 +1738,7 @@
         setTimeout(() => {
           updateGalleryThumbs(currentSlide, false);
           requestAnimationFrame(() => galleryThumbs.classList.remove('is-fading'));
-        }, 150);
+        }, 45);
       } else {
         updateGalleryThumbs(currentSlide);
       }
