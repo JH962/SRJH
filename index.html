@@ -267,11 +267,7 @@
       display: flex;
       width: 100%;
       height: 100%;
-      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.18s ease;
-      opacity: 1;
-    }
-    .gallery-slides.is-fading {
-      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
     }
     .gallery-slide {
       width: 100%;
@@ -1702,11 +1698,10 @@
 
     // ── GALLERY ──
     const TOTAL_SLIDES = 20;
-    const GALLERY_TRANSITION = 'transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.18s ease';
+    const GALLERY_TRANSITION = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
     const gallerySlides = document.getElementById('gallery-slides');
     let currentSlide = 0;
     let galleryTrackIndex = 1;
-    let isGalleryFading = false;
     function setGalleryPosition(idx, animated) {
       gallerySlides.style.transition = animated ? GALLERY_TRANSITION : 'none';
       gallerySlides.style.transform = `translateX(-${idx * 100}%)`;
@@ -1715,11 +1710,11 @@
         gallerySlides.style.transition = GALLERY_TRANSITION;
       }
     }
-    function updateGalleryThumbs(idx) {
+    function updateGalleryThumbs(idx, smooth = true) {
       const thumbs = document.querySelectorAll('.gallery-thumb');
       thumbs.forEach((t, i) => t.classList.toggle('active', i === idx));
       // 썸네일 활성 항목 스크롤
-      thumbs[idx] && thumbs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      thumbs[idx] && thumbs[idx].scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'nearest', inline: 'center' });
     }
     function goSlide(idx) {
       currentSlide = idx;
@@ -1727,34 +1722,12 @@
       setGalleryPosition(galleryTrackIndex, true);
       updateGalleryThumbs(idx);
     }
-    function fadeGalleryTo(idx) {
-      if (isGalleryFading) return;
-      isGalleryFading = true;
-      gallerySlides.classList.add('is-fading');
-      setTimeout(() => {
-        currentSlide = idx;
-        galleryTrackIndex = idx + 1;
-        setGalleryPosition(galleryTrackIndex, false);
-        updateGalleryThumbs(idx);
-        requestAnimationFrame(() => {
-          gallerySlides.classList.remove('is-fading');
-          setTimeout(() => { isGalleryFading = false; }, 180);
-        });
-      }, 160);
-    }
     function moveGallery(step) {
-      if (currentSlide === TOTAL_SLIDES - 1 && step > 0) {
-        fadeGalleryTo(0);
-        return;
-      }
-      if (currentSlide === 0 && step < 0) {
-        fadeGalleryTo(TOTAL_SLIDES - 1);
-        return;
-      }
+      const isEdgeLoop = (currentSlide === TOTAL_SLIDES - 1 && step > 0) || (currentSlide === 0 && step < 0);
       galleryTrackIndex += step;
       currentSlide = (currentSlide + step + TOTAL_SLIDES) % TOTAL_SLIDES;
       setGalleryPosition(galleryTrackIndex, true);
-      updateGalleryThumbs(currentSlide);
+      updateGalleryThumbs(currentSlide, !isEdgeLoop);
     }
     (function initGalleryLoop() {
       const slides = Array.from(gallerySlides.children);
