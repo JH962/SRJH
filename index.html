@@ -289,18 +289,31 @@
       transform: translateY(-50%);
       border: 0;
       background: transparent;
-      color: #fff;
-      font-size: 24px;
-      font-weight: 200;
-      line-height: 1;
       cursor: pointer;
       opacity: 0.9;
+    }
+    .gallery-arrow::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 13px;
+      height: 13px;
+      border-top: 1.5px solid #fff;
+      border-right: 1.5px solid #fff;
+      transform-origin: center;
     }
     .gallery-arrow.prev {
       left: 10px;
     }
+    .gallery-arrow.prev::before {
+      transform: translate(-35%, -50%) rotate(-135deg);
+    }
     .gallery-arrow.next {
       right: 10px;
+    }
+    .gallery-arrow.next::before {
+      transform: translate(-65%, -50%) rotate(45deg);
     }
     .gallery-thumbs {
       display: flex;
@@ -1348,8 +1361,8 @@
           <div class="gallery-slide"><img src="images/gallery/gallery19.jpg" alt=""></div>
           <div class="gallery-slide"><img src="images/gallery/gallery20.jpg" alt=""></div>
         </div>
-        <button class="gallery-arrow prev" type="button" aria-label="이전 사진" onclick="moveGallery(-1)">&lt;</button>
-        <button class="gallery-arrow next" type="button" aria-label="다음 사진" onclick="moveGallery(1)">&gt;</button>
+        <button class="gallery-arrow prev" type="button" aria-label="이전 사진" onclick="moveGallery(-1)"></button>
+        <button class="gallery-arrow next" type="button" aria-label="다음 사진" onclick="moveGallery(1)"></button>
       </div>
       <div class="gallery-thumbs" id="gallery-thumbs">
           <div class="gallery-thumb active" onclick="goSlide(0)"><img src="images/gallery/gallery1.jpg" alt=""></div>
