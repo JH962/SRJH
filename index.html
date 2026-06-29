@@ -71,11 +71,7 @@
     .hero-gradient {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0) 25%,
-        rgba(0,0,0,0.35) 50%,
-        rgba(0,0,0,1) 100%);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 70%, rgba(0, 0, 0, 0.35) 80%, rgb(0 0 0 / 66%) 100%);
     }
     .hero-bottom {
       position: relative;
@@ -1086,7 +1082,7 @@
     #loading-screen {
       position: fixed;
       inset: 0;
-      background: #111;
+      background: #F7E4EA;
       z-index: 99999;
       display: flex;
       flex-direction: column;
@@ -1096,6 +1092,17 @@
       transition: opacity 0.8s ease;
     }
 
+    #loading-screen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('종이질감.png') repeat;
+      background-size: 300px;
+      mix-blend-mode: multiply;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 0;
+    }
     #loading-screen.fade-out {
       opacity: 0;
       pointer-events: none;
@@ -1111,6 +1118,7 @@
     }
     .loading-slide-wrap {
       position: relative;
+      z-index: 1;
       width: 180px;
       height: 180px;
     }
@@ -1131,12 +1139,14 @@
       transform: translateX(calc(-50% + 3px)) rotate(6deg) translateY(-3px);
     }
     .loading-caption {
-      color: rgba(255,255,255,0.85);
+      position: relative;
+      z-index: 1;
+      color: #1a1a1a;
       font-family: 'Pretendard Variable', Pretendard, sans-serif;
       font-size: 15px;
       font-weight: 300;
       text-align: center;
-      line-height: 1.9;
+      line-height: 1.5;
       letter-spacing: 0.05em;
       opacity: 0;
       animation: loadingFadeIn 1s ease 0.7s forwards;
@@ -1283,8 +1293,8 @@
   <div id="loading-screen">
     <div class="loading-slide-wrap">
       <img class="loading-heart" src="assets/heart.png" alt="">
-      <img class="loading-photo loading-slide active" src="assets/loading1.png" alt="">
-      <img class="loading-photo loading-slide" src="assets/loading3.png" alt="">
+      <img class="loading-photo loading-slide active" src="assets/loading1_color.png" alt="">
+      <img class="loading-photo loading-slide" src="assets/loading2_color.png" alt="">
     </div>
     <div class="loading-caption">김서래, 박지현<br>결혼합니다</div>
   </div>
