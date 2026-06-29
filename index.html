@@ -1036,6 +1036,13 @@
       opacity: 1;
       transform: translateY(0);
     }
+    .fade-in {
+      opacity: 0;
+      transition: opacity 0.9s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+    }
 
     /* ── KAKAO SHARE ── */
     .kakao-share-wrap {
@@ -1311,7 +1318,7 @@
     </section>
     <!-- OUR MEMORIES -->
     <section class="section-memories">
-      <div class="mem-camera-outer">
+      <div class="mem-camera-outer fade-in">
         <div class="mem-camera-wrap">
           <div class="mem-screen">
             <img class="mem-slide active" src="images/sub1.jpg" alt="">
@@ -2080,7 +2087,7 @@
         }
       });
     }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-up, .fade-in').forEach(el => observer.observe(el));
 
     // ── MEMORIES SLIDESHOW ──
     (function() {
