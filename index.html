@@ -1151,7 +1151,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(0,0,0,0.5);
+      background: rgba(0,0,0,0.65);
       z-index: 1;
     }
     .mem-camera-outer { z-index: 2; }
@@ -1171,21 +1171,17 @@
     }
     .mem-camera-wrap {
       position: relative;
-      width: 280px;
-      height: 496px;
+      width: 82%;
+      height: 82%;
       margin: 0 auto;
       z-index: 2;
     }
     
     .mem-screen {
       position: absolute;
-      top: 2.8%;
-      left: 5.8%;
-      width: 88.4%;
-      height: 72%;
+      inset: 0;
       overflow: hidden;
       z-index: 1;
-      border-radius: 8px;
     }
     .mem-slide {
       position: relative;
@@ -1197,15 +1193,6 @@
     }
     .mem-slide.active {
       display: block;
-    }
-    .mem-frame {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      z-index: 2;
-      pointer-events: none;
     }
 
   
@@ -1351,7 +1338,6 @@
             <img class="mem-slide" loading="lazy" src="images/sub3.jpg" alt="">
             <img class="mem-slide" loading="lazy" src="images/sub4.jpg" alt="">
           </div>
-          <img class="mem-frame" src="assets/camera_frame.png" alt="">
         </div>
       </div>
     </section>
