@@ -1171,15 +1171,17 @@
       z-index: 1;
     }
     .mem-slide {
-      position: relative;
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      display: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
     }
     .mem-slide.active {
-      display: block;
+      opacity: 1;
     }
 
   
