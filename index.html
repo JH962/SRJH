@@ -255,6 +255,10 @@
       background: #d0cece;
       touch-action: pan-y;
     }
+    html.is-kakao-webview .gallery-main-wrap {
+      box-sizing: border-box;
+      padding-top: 44px;
+    }
     .gallery-slides {
       display: flex;
       width: 100%;
@@ -1698,6 +1702,9 @@
   </div>
 
   <script>
+    if (/KAKAOTALK/i.test(navigator.userAgent || '')) {
+      document.documentElement.classList.add('is-kakao-webview');
+    }
 
     // ── GALLERY ──
     const TOTAL_SLIDES = 20;
