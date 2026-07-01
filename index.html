@@ -275,9 +275,6 @@
       object-position: 50% 0% !important;
       display: block;
     }
-    html.is-kakao-webview .gallery-slide img {
-      object-position: 50% 44px !important;
-    }
     .gallery-arrow {
       position: absolute;
       top: 50%;
@@ -1701,10 +1698,6 @@
   </div>
 
   <script>
-    if (/KAKAOTALK/i.test(navigator.userAgent || '')) {
-      document.documentElement.classList.add('is-kakao-webview');
-    }
-
     // ── GALLERY ──
     const TOTAL_SLIDES = 20;
     const GALLERY_TRANSITION = 'transform 0.4s cubic-bezier(0.4,0,0.2,1)';
