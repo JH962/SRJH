@@ -738,7 +738,7 @@
     /* ── GUESTBOOK ── */
     .section-guestbook {
       background: #f4f4f4;
-      padding: 48px 24px 92px;
+      padding: 48px 24px 60px;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -768,7 +768,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
     .gb-loading {
       display: flex;
@@ -789,17 +789,17 @@
     .gb-entry {
       position: relative;
       background: #ffffff;
-      padding: 20px 18px 24px;
+      padding: 16px 16px 16px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.12);
     }
       50%  { transform: rotate(calc(var(--r) - 2.5deg)) scale(1.02); }
       75%  { transform: rotate(calc(var(--r) + 1.5deg)) scale(1.01); }
       100% { transform: rotate(var(--r)) scale(1); }
     }
-    .gb-entry:nth-child(4n+1) { transform: rotate(-1.8deg); }
+    .gb-entry:nth-child(4n+1) { transform: rotate(-0.8deg); }
     .gb-entry:nth-child(4n+2) { transform: rotate(1.4deg); }
     .gb-entry:nth-child(4n+3) { transform: rotate(-0.6deg); }
-    .gb-entry:nth-child(4n+4) { transform: rotate(2.2deg); }
+    .gb-entry:nth-child(4n+4) { transform: rotate(1.4deg); }
     .gb-entry-name {
       font-size: 12px;
       font-weight: 600;
