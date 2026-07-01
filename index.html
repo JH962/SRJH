@@ -506,8 +506,25 @@
     }
     .cal-grid .day.sun { color: #e57373; }
     .cal-grid .day.target {
-      background: #1e1e1e;
-      color: #fff;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+      border-radius: 0;
+      color: #1e1e1e;
+      font-weight: 600;
+      text-shadow: none;
+    }
+    .cal-grid .day.target::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 44px;
+      height: 44px;
+      transform: translate(calc(-50% + 4px), -50%);
+      background: url('assets/circle.png') center / contain no-repeat;
+      z-index: -1;
+      pointer-events: none;
     }
     .cal-countdown {
       display: flex;
@@ -1116,6 +1133,7 @@
       display: block;
       position: absolute;
       opacity: 0;
+      filter: brightness(1.08);
       transition: opacity 0.4s ease;
     }
     .loading-photo.active {
@@ -1129,7 +1147,7 @@
     .loading-heart {
       position: absolute;
       width: 28px;
-      top: -20px;
+      top: -24px;
       left: calc(50% + 8px);
       transform: translateX(calc(-50% - 3px)) rotate(-10deg) translateY(0px);
       opacity: 0;
@@ -1283,7 +1301,7 @@
   <!-- LOADING SCREEN -->
   <div id="loading-screen">
     <div class="loading-slide-wrap">
-      <img class="loading-heart" src="assets/heart.png" alt="">
+      <img class="loading-heart" src="assets/circle.png" alt="">
       <img class="loading-photo loading-slide active" src="assets/loading1_color.png" alt="">
       <img class="loading-photo loading-slide" src="assets/loading2_color.png" alt="">
     </div>
