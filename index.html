@@ -768,13 +768,7 @@
       width: 100%;
       display: flex;
       flex-direction: column;
-      gap: 0px;
-    }
-    .guestbook-entries {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
+      gap: 16px;
     }
     .gb-loading {
       display: flex;
@@ -818,6 +812,33 @@
       font-weight: 300;
       color: #1e1e1e;
       line-height: 1.7;
+    }
+    .gb-pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .gb-page-btn {
+      min-width: 34px;
+      height: 34px;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      color: #6c625d;
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .gb-page-btn.active {
+      background: #3a312d;
+      color: #fff;
+      border-color: #3a312d;
+    }
+    .gb-page-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
     }
 
     /* ── GUESTBOOK BOTTOM SHEET ── */
@@ -1581,6 +1602,7 @@
       </div>
       <button class="gb-open-btn fade-up" onclick="openGbSheet()">메시지 남기기</button>
       <div class="guestbook-entries fade-up" id="gb-entries"></div>
+      <div class="gb-pagination fade-up" id="gb-pagination"></div>
     </section>
 
     <!-- KAKAO SHARE -->
@@ -2011,7 +2033,9 @@
 
     // ── GUESTBOOK (Google Sheets) ──
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbz3hn4lTr62lSgETdwWS5AFyURqEEvL3Jyodi29xQGmgeCbOmLp6t7gUZK4JQLz5a8q/exec';
-
+    const GB_PAGE_SIZE = 10;
+    let gbRows = [];
+    let gbCurrentPage = 1;
 
 
     function openGbSheet() {
@@ -2032,6 +2056,60 @@
       t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2500);
     }
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      }[ch]));
+    }
+    function isGuestbookHeader(row) {
+      const joined = row.map(cell => String(cell || '').trim().toLowerCase()).join(' ');
+      return /timestamp|타임스탬프|작성일|이름|닉네임|메시지|message/.test(joined)
+        && !/\d{4}/.test(String(row[0] || ''));
+    }
+    function getGuestbookDataRows(rows) {
+      const data = Array.isArray(rows) ? rows.filter(row => row && (row[1] || row[2])) : [];
+      if (data.length && isGuestbookHeader(data[0])) return data.slice(1);
+      return data;
+    }
+    function renderGuestbookPage(page = 1) {
+      const container = document.getElementById('gb-entries');
+      const pagination = document.getElementById('gb-pagination');
+      const totalPages = Math.ceil(gbRows.length / GB_PAGE_SIZE);
+
+      if (!gbRows.length) {
+        container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">아직 메시지가 없어요</div>';
+        pagination.innerHTML = '';
+        return;
+      }
+
+      gbCurrentPage = Math.min(Math.max(page, 1), totalPages);
+      const start = (gbCurrentPage - 1) * GB_PAGE_SIZE;
+      const pageRows = gbRows.slice(start, start + GB_PAGE_SIZE);
+
+      container.innerHTML = '';
+      pageRows.forEach(row => {
+        const div = document.createElement('div');
+        div.className = 'gb-entry';
+        div.innerHTML = `<div class="gb-entry-name">${escapeHtml(row[1])}</div><div class="gb-entry-msg">${escapeHtml(row[2])}</div>`;
+        container.appendChild(div);
+      });
+
+      if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
+      }
+
+      const pages = Array.from({ length: totalPages }, (_, idx) => idx + 1);
+      pagination.innerHTML = `
+        <button class="gb-page-btn" onclick="renderGuestbookPage(${gbCurrentPage - 1})" ${gbCurrentPage === 1 ? 'disabled' : ''}>‹</button>
+        ${pages.map(num => `<button class="gb-page-btn ${num === gbCurrentPage ? 'active' : ''}" onclick="renderGuestbookPage(${num})">${num}</button>`).join('')}
+        <button class="gb-page-btn" onclick="renderGuestbookPage(${gbCurrentPage + 1})" ${gbCurrentPage === totalPages ? 'disabled' : ''}>›</button>
+      `;
+    }
     function loadEntries() {
       const container = document.getElementById('gb-entries');
       const hasEntries = container.querySelector('.gb-entry') !== null;
@@ -2041,21 +2119,13 @@
       fetch(GAS_URL + '?type=guestbook')
         .then(r => r.json())
         .then(rows => {
-          container.innerHTML = '';
-          if (rows.length <= 1) {
-            container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">아직 메시지가 없어요</div>';
-            return;
-          }
-          rows.slice(1).reverse().forEach(row => {
-            const div = document.createElement('div');
-            div.className = 'gb-entry';
-            div.innerHTML = `<div class="gb-entry-name">${row[1]}</div><div class="gb-entry-msg">${row[2]}</div>`;
-            container.appendChild(div);
-          });
+          gbRows = getGuestbookDataRows(rows).reverse();
+          renderGuestbookPage(1);
         })
         .catch(() => {
           if (!hasEntries) {
             container.innerHTML = '<div style="text-align:center;color:#aaa;font-size:13px;padding:16px;">불러오기 실패</div>';
+            document.getElementById('gb-pagination').innerHTML = '';
           }
         });
     }
@@ -2068,13 +2138,8 @@
       document.getElementById('gb-msg').value = '';
       closeGbSheet();
       setTimeout(() => showToast('메시지를 남겼어요 💛'), 320);
-      const container = document.getElementById('gb-entries');
-      const emptyMsg = container.querySelector('div[style]');
-      if (emptyMsg) emptyMsg.remove();
-      const div = document.createElement('div');
-      div.className = 'gb-entry';
-      div.innerHTML = `<div class="gb-entry-name">${name}</div><div class="gb-entry-msg">${msg}</div>`;
-      container.prepend(div);
+      gbRows.unshift([new Date().toISOString(), name, msg]);
+      renderGuestbookPage(1);
       fetch(GAS_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -2176,8 +2241,8 @@
           {
             title: '위치보기',
             link: {
-              mobileWebUrl: 'https://srjh2026.me/map.html',
-              webUrl: 'https://srjh2026.me/map.html',
+              mobileWebUrl: 'https://naver.me/5tJtecTg',
+              webUrl: 'https://naver.me/5tJtecTg',
             },
           },
         ],
