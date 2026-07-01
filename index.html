@@ -1705,15 +1705,11 @@
     const galleryThumbs = document.getElementById('gallery-thumbs');
     let currentSlide = 0;
     let galleryTrackIndex = 1;
-    let lastWindowScrollY = window.scrollY;
-    let lastScrollDirection = null;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (Math.abs(y - lastWindowScrollY) > 2) {
-        lastScrollDirection = y > lastWindowScrollY ? 'down' : 'up';
-        lastWindowScrollY = y;
-      }
-    }, { passive: true });
+    function getVisibleViewportTopOffset() {
+      const viewport = window.visualViewport;
+      if (!viewport) return 0;
+      return Math.max(0, Math.round(viewport.offsetTop || 0));
+    }
     function normalizeSlideIndex(idx) {
       return (idx + TOTAL_SLIDES) % TOTAL_SLIDES;
     }
@@ -1812,7 +1808,7 @@
           if (!didApplySwipeScrollFix) {
             const galleryTop = wrap.getBoundingClientRect().top + window.scrollY;
             window.scrollTo({
-              top: Math.max(0, galleryTop + (lastScrollDirection === 'up' ? 44 : 0)),
+              top: Math.max(0, galleryTop - getVisibleViewportTopOffset()),
               behavior: 'auto'
             });
             didApplySwipeScrollFix = true;
