@@ -2118,7 +2118,7 @@
       const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) {
-            if (!timer) timer = setInterval(nextSlide, 5000);
+            if (!timer) timer = setInterval(nextSlide, 3500);
           } else {
             clearInterval(timer);
             timer = null;
