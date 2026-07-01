@@ -2095,11 +2095,27 @@
       const slides = document.querySelectorAll('.mem-slide');
       if (!slides.length) return;
       let cur = 0;
-      setInterval(function() {
+      let timer = null;
+      const screen = document.querySelector('.mem-screen');
+
+      function nextSlide() {
         slides[cur].classList.remove('active');
         cur = (cur + 1) % slides.length;
         slides[cur].classList.add('active');
-      }, 4000);
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            if (!timer) timer = setInterval(nextSlide, 5000);
+          } else {
+            clearInterval(timer);
+            timer = null;
+          }
+        });
+      }, { threshold: 0.3 });
+
+      if (screen) io.observe(screen);
     })();
   
 
