@@ -255,10 +255,6 @@
       background: #d0cece;
       touch-action: pan-y;
     }
-    html.is-kakao-webview .gallery-main-wrap {
-      box-sizing: border-box;
-      padding-top: 44px;
-    }
     .gallery-slides {
       display: flex;
       width: 100%;
@@ -278,6 +274,9 @@
       object-fit: cover;
       object-position: 50% 0% !important;
       display: block;
+    }
+    html.is-kakao-webview .gallery-slide img {
+      object-position: 50% 44px !important;
     }
     .gallery-arrow {
       position: absolute;
